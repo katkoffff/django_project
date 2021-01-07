@@ -1,0 +1,43 @@
+{% extends 'flatpages/default.html' %}
+{% load censors %}
+
+{% block title %}
+News
+{% endblock title %}
+
+{% block content %}
+    <h1>Все новости</h1>
+    <h3>общее количество: {{ news | length }}</h3>
+    <!--<h3>{{ value1 | default_if_none:'ничего' }}</h3>-->
+    <hr>
+    {% if news %}
+        <table>
+            <tr>
+                <td>
+                    Заголовок
+                </td>
+                <td>
+                    Дата публикации
+                </td>
+                <td>
+                    Предпросмотр
+                </td>
+            </tr>
+        {% for new in news|dictsortreversed:'create_post' %}
+            <tr>
+                <td>
+                    {{ new.header_post | censors }}
+                </td>
+                <td>
+                    {{ new.create_post|date:'d M Y' }} {{ new.create_post|time:'H:i:s.u' }}
+                </td>
+                <td>
+                    {{ new.content_post | truncatechars:50 | censors }}
+                </td>
+            </tr>
+        {% endfor %}
+        </table>
+    {% else %}
+        <h2>Новостей нет!</h2>
+    {% endif %}
+{% endblock content %}
