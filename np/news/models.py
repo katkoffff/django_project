@@ -10,11 +10,11 @@ class Author(models.Model):
         posts = Post.objects.filter(to_author__to_user__id=self.id)
         value_post = sum([p['rating_post']*3 for p in posts.values()])
         comment_own = sum([c['comment_rating'] for c in Comment.objects.filter(comment_to_user__id=self.id).values()])
-        comment_other = sum([c['comment_rating'] for c in Comment.objects.filter(comment_to_post__in = posts).values()]) 
+        comment_other = sum([c['comment_rating'] for c in Comment.objects.filter(comment_to_post__in = posts).values()])
         self.rating_author=value_post+comment_own+comment_other
         self.save()
     def __str__(self):
-        return self.to_user.username
+        return f'{self.to_user.username}' #return f'{self.to_user.username}'
         
 class Category(models.Model):
     name=models.CharField(max_length = 255,unique=True)
@@ -46,7 +46,8 @@ class Post(models.Model):
         else:
             prev=self.content_post+'...'
         return prev
-        
+    def __str__(self):
+        return f'{self.to_author.to_user.username} : {self.header_post}'
 class PostCategory(models.Model):
     to_post=models.ForeignKey(Post, on_delete = models.CASCADE)
     to_category=models.ForeignKey(Category, on_delete = models.CASCADE)
@@ -64,4 +65,3 @@ class Comment(models.Model):
     def dislike(self,value):
         self.comment_rating-=value
         self.save()
- 
