@@ -1,0 +1,35 @@
+{% extends 'flatpages/default.html' %}
+{% load censors %}
+
+{% block title %}
+News
+{% endblock title %}
+
+{% block content %}
+    <h1>Новость</h1>
+    <table>
+        <tr>
+            <td>
+                Заголовок
+            </td>
+            <td>
+                Дата публикации
+            </td>
+            <td>
+                Текст новости
+            </td>
+        </tr>
+        <tr>
+            <td>
+                {{ news_detail.header_post | censors }}
+            </td>
+            <td>
+                {{ news_detail.create_post|date:'d m Y' }} {{ news_detail.create_post|time:'H:i:s' }}
+            </td>
+            <td>
+                {{ news_detail.content_post | censors }}
+            </td>
+        </tr>
+    </table>
+    <a href="{% url 'news' %}">Вернуться к новостям</a> <br>
+{% endblock content %}
