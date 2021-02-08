@@ -26,7 +26,7 @@ class Command(BaseCommand):
 
         scheduler.add_job(
             posts_senders,
-            trigger=CronTrigger(second="*/10"), #CronTrigger(ay_of_week="sun"),
+            trigger=CronTrigger(ay_of_week="sun"),
             id="posts_senders",
             max_instances=1,
             replace_existing=True,
