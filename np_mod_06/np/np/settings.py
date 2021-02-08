@@ -32,7 +32,10 @@ ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_UNIQUE_EMAIL = True
 ACCOUNT_USERNAME_REQUIRED = False
 ACCOUNT_AUTHENTICATION_METHOD = 'email'
-ACCOUNT_EMAIL_VERIFICATION = 'none'
+ACCOUNT_EMAIL_VERIFICATION = 'optional'
+SOCIALACCOUNT_EMAIL_VERIFICATION = ACCOUNT_EMAIL_VERIFICATION
+DEFAULT_FROM_EMAIL = 'katkofff@yandex.ru'
+ACCOUNT_CONFIRM_EMAIL_ON_GET = True
 
 ACCOUNT_FORMS = {'signup': 'sign.models.BasicSignupForm'}
 
@@ -47,7 +50,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django.contrib.sites',
     'django.contrib.flatpages',
-    'news',
+    #'news',
+    'django_apscheduler',
     'django_filters',
     'allauth',
     'allauth.account',
@@ -56,9 +60,13 @@ INSTALLED_APPS = [
     'sign',
     'protect',
     'appointment',
+    'news.apps.NewsConfig',
 ]
 
-DEFAULT_FROM_EMAIL = ['katkofff@yandex.ru']
+
+APSCHEDULER_DATETIME_FORMAT = "Y-m-d H:M:S"
+APSCHEDULER_RUN_NOW_TIMEOUT = 25
+
 
 AUTHENTICATION_BACKENDS = [
     # Needed to login by username in Django admin, regardless of `allauth`
@@ -148,6 +156,11 @@ USE_L10N = True
 
 USE_TZ = True
 
+EMAIL_HOST = 'smtp.yandex.ru'
+EMAIL_PORT = 465
+EMAIL_HOST_USER = 'katkofff'
+EMAIL_HOST_PASSWORD = 'mE1pqZwK'
+EMAIL_USE_SSL = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.1/howto/static-files/

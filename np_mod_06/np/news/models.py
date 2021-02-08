@@ -18,11 +18,18 @@ class Author(models.Model):
 
         
 class Category(models.Model):
-    name=models.CharField(max_length=255, unique=True)
-    #subscribers = models.ForeignKey(User, on_delete=models.CASCADE)
+    name = models.CharField(max_length=255, unique=True)
+    subscribers = models.ManyToManyField(User, null=True, through='CategorySubscribers')
 
     def __str__(self):
         return f'{self.name}'
+
+class CategorySubscribers(models.Model):
+    category = models.ForeignKey(Category, null=True, on_delete=models.SET_NULL)
+    user = models.ForeignKey(User, null=True, on_delete=models.SET_NULL)
+
+    def __str__(self):
+        return f'{self.category}'
 
 class Post(models.Model):
     article='AR'
@@ -61,8 +68,8 @@ class Post(models.Model):
             prev = self.content_post + '...'
         return prev
 
-    def __str__(self):
-        return f'{self.to_author.to_user.username} : {self.header_post}'
+    #def __str__(self):
+    #    return f'{self.to_author.to_user.username} : {self.header_post}'
 
     def get_absolute_url(self):
         return f'/news/{self.id}'
