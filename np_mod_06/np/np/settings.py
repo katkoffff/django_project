@@ -159,7 +159,7 @@ USE_TZ = True
 EMAIL_HOST = 'smtp.yandex.ru'
 EMAIL_PORT = 465
 EMAIL_HOST_USER = 'katkofff'
-EMAIL_HOST_PASSWORD = 'mE1pqZwK'
+EMAIL_HOST_PASSWORD = '######'
 EMAIL_USE_SSL = True
 
 # Static files (CSS, JavaScript, Images)
