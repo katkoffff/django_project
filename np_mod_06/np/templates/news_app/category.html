@@ -1,0 +1,52 @@
+{% extends 'flatpages/default.html' %}
+{% load censors %}
+
+{% block title %}
+category
+{% endblock title %}
+
+
+{% block content %}
+    <h1>Новость</h1>
+    <h2>Подписка/Отписка:</h2>
+    {% if user_is_anonymous %}
+        <br><h4>Пожалуйста, авторизуйтесь, чтобы подписаться на данную категорию новостей</h4>
+    {% else %}
+        {% if is_subscribe %}
+            <a class="btn btn-primary float-center" href="{% url 'unsubscribe' %}">Отписаться</a><br>
+            <br><h4>Если больше не желаете получать уведомление о новых новостях, нажмите отписаться</h4>
+        {% else %}
+            <a class="btn btn-primary float-center" href="{% url 'subscribe' %}">Подписаться</a><br>
+            <br><h4>Если хотите получать уведомления о новых новостях, вы можете подписаться на данную категорию</h4>
+        {% endif %}
+    {% endif %}
+    <table>
+        <tr>
+            <td>
+                Заголовок
+            </td>
+            <td>
+                Дата публикации
+            </td>
+            <td>
+                Категория
+            </td>
+        </tr>
+        <tr>
+            <td>
+                {{ category.header_post | censors }}
+            </td>
+            <td>
+                {{ category.create_post|date:'d m Y' }} {{ new.create_post|time:'H:i:s' }}
+            </td>
+            <td>
+                {{ category.name_category }}
+            </td>
+        </tr>
+
+    </table>
+    <a class="btn btn-primary float-center" href="{% url 'news' %}">Вернуться</a><br>
+{% endblock content %}
+
+
+

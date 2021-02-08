@@ -26,6 +26,7 @@ News
                 <a href="{% url 'news_detail' new.id %}">{{ new.header_post | censors }}</a>
                 <a href="{% url 'news_update' new.id %}"><u>Редактировать</u></a>
                 <a href="{% url 'news_delete' new.id %}"><u> Удалить </u></a>
+                <a href="{% url 'category' new.id %}"><u> Оформить подписку </u></a>
             </td>
             <td>
                 {{ new.create_post|date:'d m Y' }} {{ new.create_post|time:'H:i:s' }}
@@ -57,4 +58,5 @@ News
     {% endif %}
     <br>
     <button> <a href="/"> Перейти к профилю</a> </button>
+    <a href="{% url 'appointments:appointment' %}">Перейти к заявке</a> <br>
 {% endblock content %}
