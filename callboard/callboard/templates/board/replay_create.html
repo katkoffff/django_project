@@ -1,0 +1,13 @@
+{% block title %}
+Replays
+{% endblock title %}
+
+{% block content %}
+<h3>Создание отклика</h3>
+<form method="POST">
+    {% csrf_token %}
+    {{ form }}
+    <input type="submit" value="Добавить отклик">
+</form>
+<a href="{% url 'boards' %}">Вернуться к объявлениям</a> <br>
+{% endblock content %}

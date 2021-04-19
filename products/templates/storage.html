@@ -1,0 +1,88 @@
+<!--<a href="{% url 'product_detail' product.id %}">{{ product.name }}</a>
+                <a href="{% url 'product_update' product.id %}"><u>Редактировать</u></a>
+                <a href="{% url 'product_delete' product.id %}"><u> Удалить </u></a>-->
+
+
+<!--<a href="{% url 'product_create' %}">Добавить новый товар</a> <br>-->
+
+{% extends 'flatpages/default.html' %}
+
+{% block title %}
+Products
+{% endblock title %}
+
+{% block content %}
+    <h1>Все товары</h1>
+    <h3>{{ time_now | date:'M d Y' }}</h3>
+    <h3>{{ value1 | default_if_none:'ничего' }}</h3>
+    <hr>
+    {% if products %}
+        <form method="GET">
+        {{ filter.form }}
+        <input type="submit" value="Найти">
+        </form>
+        <table>
+            <tr>
+                <td>
+                    Название
+                </td>
+                <td>
+                    Описание
+                </td>
+                <td>
+                    Категория
+                </td>
+                <td>
+                    Цена
+                </td>
+                <td>
+                    Количество
+                </td>
+            </tr>
+        {% for product in products %}
+            <tr>
+                <td>
+                    {{ product.name }}
+                </td>
+                <td>
+                    {{ product.description | truncatechars:10 }}
+                </td>
+                <td>
+                    {{ product.category.name }}
+                </td>
+                <td>
+                    {{ product.price }}
+                </td>
+                <td>
+                    {{ product.quantity }}
+                </td>
+            </tr>
+        {% endfor %}
+        </table>
+        {% if is_paginated %}
+            {% if page_obj.has_previous %}
+                <a href="?page=1">First</a>
+                <a href="?page={{ page_obj.previous_page_number }}"><<<</a>
+            {% endif %}
+            {% for num in page_obj.paginator.page_range %}
+                {% if page_obj.number == num %}
+                    <a>{{ num }}</a>
+                {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+                    <a href="?page={{ num }}">{{ num }}</a>
+                {% endif %}
+            {% endfor %}
+            {% if page_obj.has_next %}
+                <a href="?page={{ page_obj.next_page_number }}">>>></a>
+                <a href="?page={{ page_obj.paginator.num_pages }}">Last</a>
+            {% endif %}
+        {% endif %}
+        <form method="POST">
+            {% csrf_token %}
+            {{ form }}
+            <input type="submit" value="Добавить товар">
+        </form>
+    {% else %}
+        <h2>Товаров нет!</h2>
+    {% endif %}
+
+{% endblock content %}

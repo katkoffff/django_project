@@ -1,0 +1,80 @@
+{% block title %}
+Replays
+{% endblock title %}
+
+{% block content %}
+    <h1>Все отклики</h1> <hr>
+    <a href="{% url 'boards' %}">Вернуться к объявлениям</a> <br> <hr>
+    <table>
+        <tr>
+            <td>
+                Автор
+            </td>
+            <td>
+                Объявление
+            </td>
+            <td>
+                Отклик
+            </td>
+            <td>
+                Статус
+            </td>
+            <td>
+                Одобрить/Отклонить
+            </td>
+        </tr>
+    {% for replay in boards_replay %}
+        <tr>
+            <td>
+                {{ replay.author.user }}
+            </td>
+            <td>
+                {{ replay.post.head |safe }}
+            </td>
+            <td>
+                {{ replay.content }}
+            </td>
+            <td>
+                {{ replay.status }}
+            </td>
+            <td>
+                {% if replay.post.author.user == request.user %}
+                    {% if replay.status == 'WT' %}
+                       <form action="{% url 'subscribes' replay.id %}" method="POST">
+                            {% csrf_token %}
+                            <button type="submit" name="confirm" value="{{replay.id}}">Confirm</button>
+                            <button type="submit" name="rejected" value="{{replay.id}}">Regected</button>
+                        </form>
+                    {% else %}
+                        <a >Действие выполнено </a>
+                    {% endif %}
+                {% else %}
+                    {% if replay.status == 'WT' %}
+                        <a >Действие доступно только автору статьи </a>
+                    {% else %}
+                        <a >Действие выполнено </a>
+                    {% endif %}
+                {% endif %}
+            </td>
+        </tr>
+    {% endfor %}
+    </table>
+    {% if is_paginated %}
+        {% if page_obj.has_previous %}
+            <a href="?page=1">First</a>
+            <a href="?page={{ page_obj.previous_page_number }}"><<<</a>
+        {% endif %}
+        {% for num in page_obj.paginator.page_range %}
+            {% if page_obj.number == num %}
+                <a>{{ num }}</a>
+            {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+                <a href="?page={{ num }}">{{ num }}</a>
+            {% endif %}
+        {% endfor %}
+        {% if page_obj.has_next %}
+            <a href="?page={{ page_obj.next_page_number }}">>>></a>
+            <a href="?page={{ page_obj.paginator.num_pages }}">Last</a>
+        {% endif %}
+    {% endif %}
+    <br>
+{% endblock content %}

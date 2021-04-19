@@ -1,0 +1,47 @@
+{% extends 'flatpages/default.html' %}
+ 
+{% block title %} Product list {% endblock title %}
+ 
+{% block content %}
+<h2>Вы действительно хотите удалить данный товар?</h2>
+<table>
+    <tr>
+        <td>
+            Название
+        </td>
+        <td>
+            Описание
+        </td>
+        <td>
+            Категория
+        </td>
+        <td>
+            Цена
+        </td>
+        <td>
+            Количество
+        </td>
+    </tr>
+    <tr>
+        <td>
+            {{ product_delete.name }}
+        </td>
+        <td>
+            {{ product_delete.description  }}
+        </td>
+        <td>
+            {{ product_delete.category.name }}
+        </td>
+        <td>
+            {{ product_delete.price }}
+        </td>
+        <td>
+            {{ product_delete.quantity }}
+        </td>
+    </tr>
+</table>
+ 
+<form method="POST">
+    {% csrf_token %}
+    <input type="submit" value="подтвердить"></form>
+{% endblock content %} 

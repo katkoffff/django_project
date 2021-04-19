@@ -1,0 +1,85 @@
+1. Создать двух пользователей (с помощью метода User.objects.create_user):
+>>> u1=nm.User.objects.create_user(username='first')
+>>> u2=nm.User.objects.create_user(username='seconde')
+
+2. Создать два объекта модели Author, связанные с пользователями:
+>>> a1=nm.Author.objects.create(to_user=u1)
+>>> a2=nm.Author.objects.create(to_user=u2)
+
+3. Добавить 4 категории в модель Category:
+>>> c1=nm.Category.objects.create(name='sport')
+>>> c2=nm.Category.objects.create(name='fish')
+>>> c3=nm.Category.objects.create(name='scince')
+>>> c4=nm.Category.objects.create(name='history')
+
+4. Добавить 2 статьи и 1 новость:
+>>> p1=nm.Post.objects.create(to_author=a1,category_post='AR',header_post='basketball',content_post="mlfewkfel,f'a,f'd,f'd,lf'df,;ds,lf;dsfgnujqwjebn';';wan';';
+rgr;lgr;l;wlgf,bleak'KFEKRELFDKl;flgdf;gl;wele;rl;g,.b'frt;ea;jofklhmmbtoiylremao'e;rt;fmg")
+>>> p2=nm.Post.objects.create(to_author=a1,category_post='AR',header_post='shark',content_post="mlfewkfel,f'a,f'd,f'dlf;dsfgnujqwjebn';';wan';';rgr;lgr;l;wlgf,b
+leak'KFEKRELFDKl;flgdf;gl;welea;jofklhmmbtoiylremao'e;rt;fmg")
+>>> p3=nm.Post.objects.create(to_author=a2,category_post='AR',header_post='collayder',content_post="mlfewkfel,f'a,f'd,f'dlf;dsfgnujqwjebn';';wan';';rgr;lgr;l;wl
+gf,bleak'KFEKRELFDKl;flgdf;gl;welea;jofklhmmbtoiylremao'e;elrfe;wrje;rq;lwrekm;wqlkrewq;lkerrt;fmg")
+>>> p4=nm.Post.objects.create(to_author=a2,category_post='AR',header_post='vikings',content_post="mlfewerweqrwqel;rkwqlkdlf;dsfgnujqwjebn';';wan';';rgr;lgr;l;wl
+gf,bleak'KFEKRELFDKl;flgdf;gl;welea;jofklhmmbtoiylremao'e;elrfe;wrje;rq;lwrekm;wqlkrewq;lkerrt;fmg")
+
+5. Присвоить им категории (как минимум в одной статье/новости должно быть не меньше 2 категорий):
+>>> pc1=nm.PostCategory.objects.create(to_post=p1,to_category=c1)
+>>> pc2=nm.PostCategory.objects.create(to_post=p1,to_category=c4)
+>>> pc3=nm.PostCategory.objects.create(to_post=p2,to_category=c2)
+>>> pc4=nm.PostCategory.objects.create(to_post=p3,to_category=c3)
+>>> pc5=nm.PostCategory.objects.create(to_post=p4,to_category=c4)
+
+6. Создать как минимум 4 комментария к разным объектам модели Post (в каждом объекте должен быть как минимум один комментарий):
+>>> cm1=nm.Comment.objects.create(comment_to_post=p1,comment_to_user=u1,comment_text="w;qerjwq;lej;wlqejmwq;lem;wlemw;lmrwe;lkqrjm;lwemr")
+>>> cm2=nm.Comment.objects.create(comment_to_post=p2,comment_to_user=u2,comment_text="w;qerjwq;lej;wlqejmwq;lem;lk;ujkl;ujkly;j.646")
+>>> cm3=nm.Comment.objects.create(comment_to_post=p3,comment_to_user=u2,comment_text="w;ql;l'l;[l;q;'wq'wq';w'q;wlem;lk;ujkl;ujkly;j.646")
+>>> cm4=nm.Comment.objects.create(comment_to_post=p4,comment_to_user=u1,comment_text="w;ql;l'l;[l;q;'wq'wq'lklrtrterithhszjrsewewqjeklse.646")
+
+7. Применяя функции like() и dislike() к статьям/новостям и комментариям, скорректировать рейтинги этих объектов:
+>>> p1.like(1)
+>>> p2.dislike(5)
+>>> p3.like(2)
+>>> p4.like(3)
+>>> cm1.like(1)
+>>> cm2.dislike(2)
+>>> cm2.like(1)
+>>> cm3.like(4)
+>>> cm4.like(10)
+
+8. Обновить рейтинги пользователей:
+>>> import news.models as nm
+>>> a1=nm.Author.objects.get(to_user__username='first')
+>>> a1.update_rating()
+>>> a1.rating_author
+-1
+
+>>> import news.models as nm
+>>> a2=nm.Author.objects.get(to_user__username='seconde')
+>>> a2.update_rating()
+>>> a2.rating_author
+32
+
+9. Вывести username и рейтинг лучшего пользователя (применяя сортировку и возвращая поля первого объекта):
+>>> nm.Author.objects.all().order_by('-rating_author').values('to_user__username','rating_author')[0]
+{'to_user__username': 'seconde', 'rating_author': 32}
+
+10. Вывести дату добавления, username автора, рейтинг, заголовок и превью лучшей статьи, основываясь на лайках/дислайках к этой статье:
+>>> nm.Post.objects.all().order_by('-rating_post').values('create_post','to_author__to_user__username','rating_post','header_post')[0]
+{'create_post': datetime.datetime(2020, 12, 28, 3, 10, 21, 95950, tzinfo=<UTC>), 'to_author__to_user__username': 'seconde', 'rating_post': 3, 'header_post': 'vi
+kings'}
+
+>>> preview=nm.Post.objects.get(rating_post=nm.Post.objects.all().aggregate(nm.models.Max('rating_post'))['rating_post__max'])
+>>> preview.preview()
+"mlfewerweqrwqel;rkwqlkdlf;dsfgnujqwjebn';';wan';';rgr;lgr;l;wlgf,bleak'KFEKRELFDKl;flgdf;gl;welea;jofklhmmbtoiylremao'e;elrf..."
+
+11. Вывести все комментарии (дата, пользователь, рейтинг, текст) к этой статье:
+>>> nm.Comment.objects.filter(comment_to_post__id=preview.id).values('comment_time','comment_to_user__username','comment_rating','comment_text')
+<QuerySet [{'comment_time': datetime.datetime(2020, 12, 28, 3, 19, 13, 7657, tzinfo=<UTC>), 'comment_to_user__username': 'first', 'comment_rating': 10, 'comment
+_text': "w;ql;l'l;[l;q;'wq'wq'lklrtrterithhszjrsewewqjeklse.646"}]>
+
+
+
+
+
+
+

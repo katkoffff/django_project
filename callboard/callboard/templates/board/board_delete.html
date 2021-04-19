@@ -1,0 +1,38 @@
+{% block title %} News {% endblock title %}
+ 
+{% block content %}
+<h2>Вы действительно хотите удалить объявление?</h2>
+<table>
+    <tr>
+            <td>
+                Категория
+            </td>
+            <td>
+                Автор
+            </td>
+            <td>
+                Заголовок
+            </td>
+            <td>
+                Объявление
+            </td>
+        </tr>
+        <tr>
+            <td>
+                {{ boards_detail.category | truncatechars:50 }}
+            </td>
+            <td>
+                {{ boards_detail.author | truncatechars:50 }}
+            </td>
+            <td>
+                {{ boards_detail.head }}
+            </td>
+            <td>
+                {{ boards_detail.content | safe }}
+            </td>
+        </tr>
+</table>
+<form method="POST">
+    {% csrf_token %}
+    <input type="submit" value="подтвердить"></form>
+{% endblock content %} 

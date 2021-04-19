@@ -1,0 +1,43 @@
+{% extends 'flatpages/default.html' %}
+{% load censors %}
+
+{% block title %}
+News
+{% endblock title %}
+
+{% block content %}
+    <h1>Поиск новости</h1>
+    <h3>текущее время: {{ time_now | date:'M d Y' }}</h3>
+    <hr>
+    <form method="GET">
+    {{ filter.form }}
+    <input type="submit" value="Найти">
+    </form>
+    <table>
+        <tr>
+            <td>
+                Заголовок
+            </td>
+            <td>
+                Дата публикации
+            </td>
+            <td>
+                Текст новости
+            </td>
+        </tr>
+    {% for new in filter.qs %}
+        <tr>
+            <td>
+                {{ new.header_post | censors }}
+            </td>
+            <td>
+                {{ new.create_post|date:'d m Y' }} {{ new.create_post|time:'H:i:s' }}
+            </td>
+            <td>
+                {{ new.content_post | censors }}
+            </td>
+        </tr>
+    {% endfor %}
+    </table>
+    <a href="{% url 'news' %}">Вернуться к новостям</a> <br>
+{% endblock content %}

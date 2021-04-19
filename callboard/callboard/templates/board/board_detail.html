@@ -1,0 +1,42 @@
+{% load static %}
+<script type="text/javascript" src="{% static "ckeditor/ckeditor-init.js" %}"></script>
+<script type="text/javascript" src="{% static "ckeditor/ckeditor/ckeditor.js" %}"></script>
+{% block title %}
+Boards
+{% endblock title %}
+
+{% block content %}
+    <h1>Объявление</h1><hr>
+    <table>
+        <tr>
+            <td>
+                Категория
+            </td>
+            <td>
+                Автор
+            </td>
+            <td>
+                Заголовок
+            </td>
+            <td>
+                Объявление
+            </td>
+        </tr>
+        <tr>
+            <td>
+                {{ boards_detail.category | truncatechars:50 }}
+            </td>
+            <td>
+                {{ boards_detail.author | truncatechars:50 }}
+            </td>
+            <td>
+                {{ boards_detail.head }}
+            </td>
+            <td>
+                {{ boards_detail.content | safe }}
+            </td>
+        </tr>
+    </table>
+    <hr>
+    <a href="{% url 'boards' %}">Вернуться к объявлениям</a> <br> <hr>
+{% endblock content %}

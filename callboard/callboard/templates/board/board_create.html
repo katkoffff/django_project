@@ -1,0 +1,16 @@
+{% load static %}
+<script type="text/javascript" src="{% static "ckeditor/ckeditor-init.js" %}"></script>
+<script type="text/javascript" src="{% static "ckeditor/ckeditor/ckeditor.js" %}"></script>
+{% block title %}
+Boards
+{% endblock title %}
+
+{% block content %}
+<h3>Создание объявления</h3>
+<form method="POST">
+    {% csrf_token %}
+    {{ form }}
+    <input type="submit" value="Добавить объявление">
+</form>
+<a href="{% url 'boards' %}">Вернуться к объявлениям</a> <br>
+{% endblock content %}
